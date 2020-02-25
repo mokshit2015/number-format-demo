@@ -7,6 +7,7 @@ class App extends React.Component{
     super(props);
     this.state = {
       cardNo : '',
+      num : '',
       gapSize : {
         '0' : '(',
         '3' : ') ',
@@ -27,21 +28,26 @@ class App extends React.Component{
     const { cardNo, gapSize } = this.state;
     let result = '';
     let arr = cardNo.split("").filter((val) => { return /[0-9]/.test(val) });
-    
+
+    if(arr.length >= 4){
+      arr.unshift("(");
+    }
     result =  arr.map((item,i) => {
-      if(i==Object.keys(gapSize)[0])
-        return gapSize[0] + item;
-      else if(i==3){
+      
+      if(i==4){
         return  gapSize[3] + item ;
       }
-      else if(i == 6)
+      else if(i == 7)
         return gapSize[6] + item;
       else
         return item
     });
+
+    let data = arr.filter(val => val !== '(' )
       
     this.setState({
-      cardNo : result.join("")
+      cardNo : result.join(""),
+      num : data.join("")    
     })
   }
 
@@ -49,7 +55,7 @@ class App extends React.Component{
     return(
       <div>
         <br/>
-        Enter Number : <input type="text" name="cardNo" value={this.state.cardNo} onChange={this.handleChange}/>
+        Enter Number : <input type="text" maxLength="14" name="cardNo" value={this.state.cardNo} onChange={this.handleChange}/>
       </div>
     );
   }
